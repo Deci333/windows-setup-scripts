@@ -1,0 +1,44 @@
+# Development-Focused Windows Setup via Winget
+# Run in PowerShell (admin recommended)
+# Last updated: 2025-11-07
+
+# Update winget sources first
+winget source update
+
+# === CORE DEVELOPMENT TOOLS ===
+winget install -e --id Microsoft.VisualStudioCode
+winget install -e --id Git.Git
+winget install -e --id GitHub.GitHubDesktop
+winget install -e --id Notepad++.Notepad++
+
+# === PROGRAMMING LANGUAGES & RUNTIMES ===
+winget install -e --id Python.Python.3.12
+winget install -e --id OpenJS.NodeJS.LTS
+
+# === DATABASE & SQL TOOLS ===
+winget install -e --id Microsoft.SQLServerManagementStudio
+
+# === CONTAINERS & VIRTUALIZATION ===
+winget install -e --id Docker.DockerDesktop
+
+# === ADVANCED DEVELOPMENT ===
+winget install -e --id Microsoft.VisualStudio.2022.Community
+
+# === MICROSOFT UTILITIES ===
+winget install -e --id Microsoft.PowerToys
+winget install -e --id Microsoft.WindowsTerminal
+winget install -e --id Microsoft.PowerShell
+winget install -e --id Microsoft.Sysinternals
+
+# === ESSENTIAL UTILITIES ===
+winget install -e --id 7zip.7zip
+winget install -e --id Voidtools.Everything
+winget install -e --id ShareX.ShareX
+
+# === SECURITY TOOLS ===
+winget install -e --id KeePassXCTeam.KeePassXC
+winget install -e --id WiresharkFoundation.Wireshark
+
+# === AFTER INSTALLATION ===
+# Update all installed packages:
+# winget upgrade --all

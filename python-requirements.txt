@@ -1,0 +1,24 @@
+# Python Package Requirements
+# Install with: pip install -r python-requirements.txt
+# Last updated: 2025-11-07
+
+# === WEB AUTOMATION & SCRAPING ===
+selenium>=4.15.0
+webdriver-manager>=4.0.0
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+
+# === DATA PROCESSING ===
+pandas>=2.0.0
+openpyxl
+
+# === UTILITIES ===
+requests>=2.31.0
+cryptography>=41.0.0
+schedule>=1.2.0
+
+# === MACHINE LEARNING (from NewPCWingets2.txt) ===
+# Uncomment if needed - these are large packages
+# transformers
+# accelerate
+# torch
