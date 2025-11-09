@@ -4,7 +4,7 @@ A collection of scripts and configuration files for automating Windows PC setup 
 
 ## Quick Start - 7-Step Setup Process
 
-**Before you begin:** Review `0-windows-prerequisites.md` to ensure all required Windows features and BIOS settings are configured.
+Review `0-windows-prerequisites.md` to ensure all required Windows features and BIOS settings are configured. Backtrack to here later for troubleshooting if needed.
 
 For a complete development environment, run these files in order:
 
@@ -18,7 +18,6 @@ For a complete development environment, run these files in order:
 2. **(Optional) WSL CLI Tools Setup**
    - After restart, follow manual steps in `1b-wsl-cli-setup.md`
    - Node.js (NVM), Codex CLI, Claude Code CLI
-   - All steps are optional
 
 3. **Install Applications via Winget**
    ```powershell
@@ -50,7 +49,7 @@ For a complete development environment, run these files in order:
    # Uses config/python-packages.psd1
    ```
 
-7. **Configure Windows Services (Optional)**
+7. **Configure Windows Services **
    ```powershell
    # Run as Administrator
    .\6-win-services.ps1
@@ -58,7 +57,7 @@ For a complete development environment, run these files in order:
    # Configure which Windows services should be running/disabled
    ```
 
-8. **Configure Windows Features (Optional)**
+8. **Configure Windows Features **
    ```powershell
    # Run as Administrator
    .\7-win-features.ps1
@@ -218,7 +217,7 @@ All package lists, extensions, modules, and settings are centralized in **PowerS
 
 **Usage:**
 ```powershell
-# Run as regular user (NOT admin)
+# Run as Administrator (recommended)
 .\3-vscode-extensions.ps1
 ```
 
@@ -258,7 +257,7 @@ All package lists, extensions, modules, and settings are centralized in **PowerS
 
 **Usage:**
 ```powershell
-# Run as regular user (NOT admin)
+# Run as Administrator (recommended)
 .\5-python-packages-setup.ps1
 ```
 
@@ -331,13 +330,11 @@ Update-Module -Force
 Update Python packages:
 ```powershell
 .\5-python-packages-setup.ps1
-# Or manually: pip install --upgrade <package-name>
 ```
 
 ## Notes
 
 - All files are numbered (0-7) to indicate execution order
-- Steps 6-7 are optional (services and features configuration)
 - Step 2 separates REQUIRED dependencies from OPTIONAL applications
 - All scripts (steps 2-7) use centralized configuration files in config/*.psd1
 - Scripts are designed to be idempotent (safe to run multiple times)
