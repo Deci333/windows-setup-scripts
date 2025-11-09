@@ -1,10 +1,21 @@
 # ==================================================================
-# Aqua Lawn - Windows Features Audit (No Changes)
+# Windows Features Audit (No Changes)
+# STEP 7 OF 7 (AUDIT MODE - OPTIONAL): View-only mode for 7-win-features.ps1
 # Checks current feature state against recommended baseline
-# admin rights required
+# Configuration: config/win-features.psd1
+# Admin rights required
 # .\7-audit-win-features.ps1
 # Last updated: 2025-11-08
 # ==================================================================
+
+# Load centralized configuration
+$configPath = Join-Path $PSScriptRoot "config\win-features.psd1"
+if (-not (Test-Path $configPath)) {
+    Write-Host "[X] ERROR: Configuration file not found: $configPath" -ForegroundColor Red
+    Write-Host "Please ensure config\win-features.psd1 exists" -ForegroundColor Yellow
+    exit 1
+}
+$config = Import-PowerShellDataFile -Path $configPath
 
 function Show-Result {
     param(
@@ -39,58 +50,16 @@ Write-Host "`n=== Aqua Lawn Windows Feature Audit ===`n" -ForegroundColor Cyan
 # ================================================================
 # Features expected to be ENABLED
 # ================================================================
-$shouldBeOn = @(
-    @{Name="NetFx3";                                 Desc=".NET Framework 3.5"},
-    @{Name="NetFx4-AdvSrvs";                         Desc=".NET Framework 4.8 Advanced Services"},
-    @{Name="Printing-PrintToPDFServices-Features";   Desc="Microsoft Print to PDF"},
-    @{Name="Printing-XPSServices-Features";          Desc="Microsoft XPS Document Writer"},
-    @{Name="VirtualMachinePlatform";                 Desc="Virtual Machine Platform (WSL2/Hyper-V)"},
-    @{Name="Microsoft-Hyper-V-All";                  Desc="Hyper-V virtualization"},
-    @{Name="Microsoft-Windows-Subsystem-Linux";      Desc="Windows Subsystem for Linux"},
-    @{Name="Windows-Defender-ApplicationGuard";      Desc="Application Guard security isolation"},
-    @{Name="Windows-Defender-Credential-Guard";      Desc="Credential Guard protection"},
-    @{Name="Containers-DisposableClientVM";          Desc="Windows Sandbox"},
-    @{Name="WebDAV-Redirector";                      Desc="WebDAV client for network drives"}
-)
-
 Write-Host "`nExpected: ENABLED`n" -ForegroundColor Magenta
-foreach ($f in $shouldBeOn) {
+foreach ($f in $config.FeaturesEnabled) {
     Show-Result -Name $f.Name -Expected "Enabled" -Description $f.Desc
 }
 
 # ================================================================
 # Features expected to be DISABLED
 # ================================================================
-$shouldBeOff = @(
-    @{Name="SMB1Protocol";                         Desc="SMB 1.0 protocol (security risk)"},
-    @{Name="TelnetClient";                         Desc="Telnet client (insecure)"},
-    @{Name="TFTP";                                 Desc="TFTP client"},
-    @{Name="SimpleTCP";                            Desc="Simple TCP/IP services"},
-    @{Name="MediaPlayback";                        Desc="Windows Media Playback"},
-    @{Name="WindowsMediaPlayer";                   Desc="Windows Media Player (legacy)"},
-    @{Name="XPS-Viewer";                           Desc="XPS Viewer"},
-    @{Name="TabletPCMath";                         Desc="Math Recognition (Tablet PC)"},
-    @{Name="IIS-WebServerRole";                    Desc="Internet Information Services"},
-    @{Name="IIS-WebServer";                        Desc="IIS Web Server"},
-    @{Name="IIS-CommonHttpFeatures";               Desc="IIS Common HTTP Features"},
-    @{Name="IIS-HttpErrors";                       Desc="IIS HTTP Errors"},
-    @{Name="IIS-ApplicationDevelopment";           Desc="IIS Application Development"},
-    @{Name="IIS-NetFxExtensibility45";             Desc="IIS .NET Extensibility 4.5"},
-    @{Name="IIS-HealthAndDiagnostics";             Desc="IIS Health and Diagnostics"},
-    @{Name="IIS-HttpLogging";                      Desc="IIS HTTP Logging"},
-    @{Name="IIS-Security";                         Desc="IIS Security"},
-    @{Name="IIS-RequestFiltering";                 Desc="IIS Request Filtering"},
-    @{Name="IIS-Performance";                      Desc="IIS Performance Features"},
-    @{Name="IIS-WebServerManagementTools";         Desc="IIS Management Tools"},
-    @{Name="IIS-ManagementConsole";                Desc="IIS Management Console"},
-    @{Name="IIS-WebSockets";                       Desc="IIS WebSocket Protocol"},
-    @{Name="IIS-ASPNET45";                         Desc="IIS ASP.NET 4.5"},
-    @{Name="DirectPlay";                           Desc="DirectPlay (legacy gaming)"},
-    @{Name="ServicesForNFS-ServerAndClient";       Desc="Network File System services"}
-)
-
 Write-Host "`nExpected: DISABLED`n" -ForegroundColor Magenta
-foreach ($f in $shouldBeOff) {
+foreach ($f in $config.FeaturesDisabled) {
     Show-Result -Name $f.Name -Expected "Disabled" -Description $f.Desc
 }
 

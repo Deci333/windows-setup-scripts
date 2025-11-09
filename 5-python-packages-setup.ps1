@@ -1,11 +1,21 @@
 # ==================================================================
 # Python Packages Interactive Installation
 # Checks if packages are installed and prompts for installation
-# STEP 5 OF 5: Run this file LAST (after completing steps 1-4)
+# STEP 5 OF 7: Run this file after completing steps 1-4
 # Run in PowerShell (admin NOT required)
+# Configuration: config/python-packages.psd1
 # .\5-python-packages-setup.ps1
 # Last updated: 2025-11-08
 # ==================================================================
+
+# Load centralized configuration
+$configPath = Join-Path $PSScriptRoot "config\python-packages.psd1"
+if (-not (Test-Path $configPath)) {
+    Write-Host "[X] ERROR: Configuration file not found: $configPath" -ForegroundColor Red
+    Write-Host "Please ensure config\python-packages.psd1 exists" -ForegroundColor Yellow
+    exit 1
+}
+$config = Import-PowerShellDataFile -Path $configPath
 
 # === PREREQUISITES ===
 # 1. Python must be installed first
@@ -234,14 +244,7 @@ catch {
 # ============================================================================
 Write-Host "`n`n=== WEB AUTOMATION & SCRAPING ===`n" -ForegroundColor Magenta
 
-$webPackages = @(
-    @{Name="selenium";          Version="4.38.0"; Desc="Browser automation framework"},
-    @{Name="webdriver-manager"; Version="4.0.2";  Desc="Automatic WebDriver management"},
-    @{Name="beautifulsoup4";    Version="4.14.2"; Desc="HTML/XML parsing library"},
-    @{Name="lxml";              Version="6.0.2";  Desc="Fast XML/HTML processing"}
-)
-
-foreach ($pkg in $webPackages) {
+foreach ($pkg in $config.WebAutomation) {
     Install-PythonPackageInteractive -Name $pkg.Name -Version $pkg.Version -Description $pkg.Desc -Required $false -InstalledPackages $installedPackagesHash -PythonCommand $pythonCmd
 }
 
@@ -250,12 +253,7 @@ foreach ($pkg in $webPackages) {
 # ============================================================================
 Write-Host "`n`n=== DATA PROCESSING ===`n" -ForegroundColor Magenta
 
-$dataPackages = @(
-    @{Name="pandas";   Version="2.3.3"; Desc="Data analysis and manipulation"},
-    @{Name="openpyxl"; Version="3.1.5"; Desc="Excel file read/write support"}
-)
-
-foreach ($pkg in $dataPackages) {
+foreach ($pkg in $config.DataProcessing) {
     Install-PythonPackageInteractive -Name $pkg.Name -Version $pkg.Version -Description $pkg.Desc -Required $false -InstalledPackages $installedPackagesHash -PythonCommand $pythonCmd
 }
 
@@ -264,13 +262,7 @@ foreach ($pkg in $dataPackages) {
 # ============================================================================
 Write-Host "`n`n=== UTILITIES ===`n" -ForegroundColor Magenta
 
-$utilityPackages = @(
-    @{Name="requests";     Version="2.32.5";  Desc="HTTP library for API calls"},
-    @{Name="cryptography"; Version="46.0.3";  Desc="Cryptographic primitives"},
-    @{Name="schedule";     Version="1.2.2";   Desc="Job scheduling library"}
-)
-
-foreach ($pkg in $utilityPackages) {
+foreach ($pkg in $config.Utilities) {
     Install-PythonPackageInteractive -Name $pkg.Name -Version $pkg.Version -Description $pkg.Desc -Required $false -InstalledPackages $installedPackagesHash -PythonCommand $pythonCmd
 }
 
@@ -281,13 +273,7 @@ Write-Host "`n`n=== MACHINE LEARNING (LARGE PACKAGES - ~5-10GB) ===`n" -Foregrou
 Write-Host "WARNING: These packages are very large and may take 10+ minutes to download/install" -ForegroundColor Yellow
 Write-Host "Requires Python 3.10+ | torch 2.9.0 requires CUDA 12.8+ for GPU support" -ForegroundColor Gray
 
-$mlPackages = @(
-    @{Name="torch";        Version="2.9.0";  Desc="PyTorch deep learning framework (~2GB)"},
-    @{Name="transformers"; Version="4.57.1"; Desc="Hugging Face transformers library (~500MB)"},
-    @{Name="accelerate";   Version="1.1.0";  Desc="PyTorch training acceleration"}
-)
-
-foreach ($pkg in $mlPackages) {
+foreach ($pkg in $config.MachineLearning) {
     Install-PythonPackageInteractive -Name $pkg.Name -Version $pkg.Version -Description $pkg.Desc -Required $false -InstalledPackages $installedPackagesHash -PythonCommand $pythonCmd
 }
 

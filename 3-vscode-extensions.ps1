@@ -1,11 +1,21 @@
 # ==================================================================
 # VS Code Extensions Interactive Installation
 # Checks if extensions are installed and prompts for installation
-# STEP 3 OF 5: Run this file THIRD (after 1-windows-system-config.ps1 and 2-winget-development.ps1)
+# STEP 3 OF 7: Run this file THIRD (after 1-windows-system-config.ps1 and 2-winget-development.ps1)
 # Run in PowerShell (admin NOT required)
+# Configuration: config/vscode-extensions.psd1
 # .\3-vscode-extensions.ps1
 # Last updated: 2025-11-08
 # ==================================================================
+
+# Load centralized configuration
+$configPath = Join-Path $PSScriptRoot "config\vscode-extensions.psd1"
+if (-not (Test-Path $configPath)) {
+    Write-Host "[X] ERROR: Configuration file not found: $configPath" -ForegroundColor Red
+    Write-Host "Please ensure config\vscode-extensions.psd1 exists" -ForegroundColor Yellow
+    exit 1
+}
+$config = Import-PowerShellDataFile -Path $configPath
 
 # === PREREQUISITES ===
 # 1. VS Code must be installed first
@@ -113,15 +123,7 @@ Write-Host "Found $($installedExtensionsSet.Count) installed extension(s)" -Fore
 # ============================================================================
 Write-Host "`n=== AI & COPILOT ===`n" -ForegroundColor Magenta
 
-$aiExtensions = @(
-    @{Id="anthropic.claude-code";      Desc="Claude Code AI assistant"},
-    @{Id="saoudrizwan.claude-dev";     Desc="Claude Dev extension"},
-    @{Id="openai.chatgpt";             Desc="ChatGPT integration"},
-    @{Id="github.copilot";             Desc="GitHub Copilot"},
-    @{Id="github.copilot-chat";        Desc="GitHub Copilot Chat"}
-)
-
-foreach ($ext in $aiExtensions) {
+foreach ($ext in $config.AI) {
     Install-VSCodeExtensionInteractive -Id $ext.Id -Description $ext.Desc -Required $false -InstalledExtensions $installedExtensionsSet
 }
 
@@ -130,14 +132,7 @@ foreach ($ext in $aiExtensions) {
 # ============================================================================
 Write-Host "`n`n=== PYTHON DEVELOPMENT ===`n" -ForegroundColor Magenta
 
-$pythonExtensions = @(
-    @{Id="ms-python.python";               Desc="Python language support"},
-    @{Id="ms-python.debugpy";              Desc="Python debugger"},
-    @{Id="ms-python.vscode-pylance";       Desc="Pylance language server"},
-    @{Id="ms-python.vscode-python-envs";   Desc="Python environment manager"}
-)
-
-foreach ($ext in $pythonExtensions) {
+foreach ($ext in $config.Python) {
     Install-VSCodeExtensionInteractive -Id $ext.Id -Description $ext.Desc -Required $false -InstalledExtensions $installedExtensionsSet
 }
 
@@ -146,13 +141,7 @@ foreach ($ext in $pythonExtensions) {
 # ============================================================================
 Write-Host "`n`n=== C# / .NET DEVELOPMENT ===`n" -ForegroundColor Magenta
 
-$csharpExtensions = @(
-    @{Id="ms-dotnettools.csdevkit";                Desc="C# Dev Kit"},
-    @{Id="ms-dotnettools.csharp";                  Desc="C# language support"},
-    @{Id="ms-dotnettools.vscode-dotnet-runtime";   Desc=".NET runtime installer"}
-)
-
-foreach ($ext in $csharpExtensions) {
+foreach ($ext in $config.CSharp) {
     Install-VSCodeExtensionInteractive -Id $ext.Id -Description $ext.Desc -Required $false -InstalledExtensions $installedExtensionsSet
 }
 
@@ -161,19 +150,7 @@ foreach ($ext in $csharpExtensions) {
 # ============================================================================
 Write-Host "`n`n=== JAVA DEVELOPMENT ===`n" -ForegroundColor Magenta
 
-$javaExtensions = @(
-    @{Id="redhat.java";                        Desc="Java language support by Red Hat"},
-    @{Id="vscjava.vscode-java-pack";           Desc="Java extension pack"},
-    @{Id="vscjava.vscode-java-debug";          Desc="Java debugger"},
-    @{Id="vscjava.vscode-java-dependency";     Desc="Java dependency viewer"},
-    @{Id="vscjava.vscode-java-test";           Desc="Java test runner"},
-    @{Id="vscjava.vscode-gradle";              Desc="Gradle support"},
-    @{Id="vscjava.vscode-maven";               Desc="Maven support"},
-    @{Id="vscjava.migrate-java-to-azure";      Desc="Azure migration tools"},
-    @{Id="vscjava.vscode-java-upgrade";        Desc="Java upgrade assistant"}
-)
-
-foreach ($ext in $javaExtensions) {
+foreach ($ext in $config.Java) {
     Install-VSCodeExtensionInteractive -Id $ext.Id -Description $ext.Desc -Required $false -InstalledExtensions $installedExtensionsSet
 }
 
@@ -182,14 +159,7 @@ foreach ($ext in $javaExtensions) {
 # ============================================================================
 Write-Host "`n`n=== SQL / DATABASE ===`n" -ForegroundColor Magenta
 
-$sqlExtensions = @(
-    @{Id="ms-mssql.mssql";                             Desc="SQL Server support"},
-    @{Id="ms-mssql.data-workspace-vscode";             Desc="Data workspace"},
-    @{Id="ms-mssql.sql-bindings-vscode";               Desc="SQL bindings"},
-    @{Id="ms-mssql.sql-database-projects-vscode";      Desc="SQL database projects"}
-)
-
-foreach ($ext in $sqlExtensions) {
+foreach ($ext in $config.SQL) {
     Install-VSCodeExtensionInteractive -Id $ext.Id -Description $ext.Desc -Required $false -InstalledExtensions $installedExtensionsSet
 }
 
@@ -198,14 +168,7 @@ foreach ($ext in $sqlExtensions) {
 # ============================================================================
 Write-Host "`n`n=== C/C++ DEVELOPMENT ===`n" -ForegroundColor Magenta
 
-$cppExtensions = @(
-    @{Id="ms-vscode.cpptools";                 Desc="C/C++ language support"},
-    @{Id="ms-vscode.cpptools-extension-pack";  Desc="C/C++ extension pack"},
-    @{Id="ms-vscode.cpptools-themes";          Desc="C/C++ themes"},
-    @{Id="ms-vscode.cmake-tools";              Desc="CMake tools"}
-)
-
-foreach ($ext in $cppExtensions) {
+foreach ($ext in $config.CPP) {
     Install-VSCodeExtensionInteractive -Id $ext.Id -Description $ext.Desc -Required $false -InstalledExtensions $installedExtensionsSet
 }
 
@@ -214,17 +177,7 @@ foreach ($ext in $cppExtensions) {
 # ============================================================================
 Write-Host "`n`n=== REMOTE DEVELOPMENT ===`n" -ForegroundColor Magenta
 
-$remoteExtensions = @(
-    @{Id="ms-vscode-remote.remote-containers";           Desc="Remote - Containers"},
-    @{Id="ms-vscode-remote.remote-ssh";                  Desc="Remote - SSH"},
-    @{Id="ms-vscode-remote.remote-ssh-edit";             Desc="Remote - SSH: Editing"},
-    @{Id="ms-vscode-remote.remote-wsl";                  Desc="Remote - WSL"},
-    @{Id="ms-vscode-remote.vscode-remote-extensionpack"; Desc="Remote Development extension pack"},
-    @{Id="ms-vscode.remote-explorer";                    Desc="Remote Explorer"},
-    @{Id="ms-vscode.remote-server";                      Desc="Remote Server"}
-)
-
-foreach ($ext in $remoteExtensions) {
+foreach ($ext in $config.RemoteDevelopment) {
     Install-VSCodeExtensionInteractive -Id $ext.Id -Description $ext.Desc -Required $false -InstalledExtensions $installedExtensionsSet
 }
 
@@ -233,12 +186,7 @@ foreach ($ext in $remoteExtensions) {
 # ============================================================================
 Write-Host "`n`n=== CONTAINERS & KUBERNETES ===`n" -ForegroundColor Magenta
 
-$containerExtensions = @(
-    @{Id="ms-azuretools.vscode-containers";            Desc="Docker containers"},
-    @{Id="ms-kubernetes-tools.vscode-kubernetes-tools"; Desc="Kubernetes tools"}
-)
-
-foreach ($ext in $containerExtensions) {
+foreach ($ext in $config.Containers) {
     Install-VSCodeExtensionInteractive -Id $ext.Id -Description $ext.Desc -Required $false -InstalledExtensions $installedExtensionsSet
 }
 
@@ -247,12 +195,7 @@ foreach ($ext in $containerExtensions) {
 # ============================================================================
 Write-Host "`n`n=== AUTOHOTKEY ===`n" -ForegroundColor Magenta
 
-$ahkExtensions = @(
-    @{Id="mark-wiemer.vscode-autohotkey-plus-plus"; Desc="AutoHotkey Plus Plus"},
-    @{Id="zero-plusplus.vscode-autohotkey-debug";   Desc="AutoHotkey debugger"}
-)
-
-foreach ($ext in $ahkExtensions) {
+foreach ($ext in $config.AutoHotkey) {
     Install-VSCodeExtensionInteractive -Id $ext.Id -Description $ext.Desc -Required $false -InstalledExtensions $installedExtensionsSet
 }
 
@@ -261,18 +204,7 @@ foreach ($ext in $ahkExtensions) {
 # ============================================================================
 Write-Host "`n`n=== OTHER UTILITIES ===`n" -ForegroundColor Magenta
 
-$utilityExtensions = @(
-    @{Id="eamodio.gitlens";                                    Desc="GitLens - Git supercharged"},
-    @{Id="dbaeumer.vscode-eslint";                             Desc="ESLint JavaScript linter"},
-    @{Id="mechatroner.rainbow-csv";                            Desc="Rainbow CSV"},
-    @{Id="redhat.vscode-yaml";                                 Desc="YAML language support"},
-    @{Id="ms-vscode.powershell";                               Desc="PowerShell support"},
-    @{Id="ms-vscode.notepadplusplus-keybindings";              Desc="Notepad++ keybindings"},
-    @{Id="visualstudioexptteam.intellicode-api-usage-examples"; Desc="IntelliCode API usage examples"},
-    @{Id="visualstudioexptteam.vscodeintellicode";             Desc="Visual Studio IntelliCode"}
-)
-
-foreach ($ext in $utilityExtensions) {
+foreach ($ext in $config.Utilities) {
     Install-VSCodeExtensionInteractive -Id $ext.Id -Description $ext.Desc -Required $false -InstalledExtensions $installedExtensionsSet
 }
 
@@ -284,5 +216,7 @@ Write-Host "[OK] = already installed, [SKIP] = skipped by user, [X] = error" -Fo
 Write-Host "`nNext steps:" -ForegroundColor Yellow
 Write-Host "  1. Restart VS Code to activate all installed extensions" -ForegroundColor Cyan
 Write-Host "  2. Run step 4: .\4-powershell-modules-setup.ps1" -ForegroundColor Cyan
-Write-Host "  3. Run step 5: pip install -r 5-python-requirements.txt" -ForegroundColor Cyan
+Write-Host "  3. Run step 5: .\5-python-packages-setup.ps1" -ForegroundColor Cyan
+Write-Host "  4. (Optional) Run step 6: .\6-win-services.ps1 (requires admin)" -ForegroundColor Cyan
+Write-Host "  5. (Optional) Run step 7: .\7-win-features.ps1 (requires admin)" -ForegroundColor Cyan
 Write-Host "`nTo view all installed extensions: code --list-extensions" -ForegroundColor Gray

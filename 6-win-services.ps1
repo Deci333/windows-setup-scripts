@@ -1,10 +1,21 @@
 # ==================================================================
-# Aqua Lawn - Windows Services Interactive Configuration
+# Windows Services Interactive Configuration
+# STEP 6 OF 7 (OPTIONAL): Run this file after completing steps 1-5
 # Checks current service state and prompts for changes
+# Configuration: config/win-services.psd1
 # Run in elevated PowerShell (Run as Administrator)
 # .\6-win-services.ps1
 # Last updated: 2025-11-08
 # ==================================================================
+
+# Load centralized configuration
+$configPath = Join-Path $PSScriptRoot "config\win-services.psd1"
+if (-not (Test-Path $configPath)) {
+    Write-Host "[X] ERROR: Configuration file not found: $configPath" -ForegroundColor Red
+    Write-Host "Please ensure config\win-services.psd1 exists" -ForegroundColor Yellow
+    exit 1
+}
+$config = Import-PowerShellDataFile -Path $configPath
 
 function Set-ServiceInteractive {
     param(
@@ -89,46 +100,24 @@ Write-Host "`n=== Aqua Lawn Windows Services Configuration ===`n" -ForegroundCol
 # ================================================================
 # Services expected: Automatic (Running)
 # ================================================================
-$shouldBeAutomatic = @(
-    @{Name="Spooler";   Desc="Print Spooler"},
-    @{Name="stisvc";    Desc="Windows Image Acquisition (scanners)"},
-    @{Name="WebClient"; Desc="WebDAV Redirector (SharePoint/OneDrive)"},
-    @{Name="WSearch";   Desc="Windows Search"},
-    @{Name="BITS";      Desc="Background Intelligent Transfer Service"},
-    @{Name="Schedule";  Desc="Task Scheduler"},
-    @{Name="W32Time";   Desc="Windows Time"},
-    @{Name="Winmgmt";   Desc="Windows Management Instrumentation"},
-    @{Name="wuauserv";  Desc="Windows Update"}
-)
-
 Write-Host "`nChecking services that should be: Automatic / Running`n" -ForegroundColor Magenta
-foreach ($s in $shouldBeAutomatic) {
+foreach ($s in $config.ServicesAutomatic) {
     Set-ServiceInteractive -Name $s.Name -ExpectedStartup "Automatic" -ExpectedStatus "Running" -Description $s.Desc
 }
 
 # ================================================================
 # Services expected: Manual
 # ================================================================
-$shouldBeManual = @(
-    @{Name="msiserver"; Desc="Windows Installer"},
-    @{Name="WerSvc";    Desc="Windows Error Reporting"}
-)
-
 Write-Host "`n`nChecking services that should be: Manual`n" -ForegroundColor Magenta
-foreach ($s in $shouldBeManual) {
+foreach ($s in $config.ServicesManual) {
     Set-ServiceInteractive -Name $s.Name -ExpectedStartup "Manual" -Description $s.Desc
 }
 
 # ================================================================
 # Services expected: Disabled (Stopped)
 # ================================================================
-$shouldBeDisabled = @(
-    @{Name="RemoteAccess";    Desc="Routing and Remote Access (security risk)"},
-    @{Name="RemoteRegistry";  Desc="Remote Registry (security risk)"}
-)
-
 Write-Host "`n`nChecking services that should be: Disabled / Stopped`n" -ForegroundColor Magenta
-foreach ($s in $shouldBeDisabled) {
+foreach ($s in $config.ServicesDisabled) {
     Set-ServiceInteractive -Name $s.Name -ExpectedStartup "Disabled" -ExpectedStatus "Stopped" -Description $s.Desc
 }
 

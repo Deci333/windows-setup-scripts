@@ -1,8 +1,18 @@
 # PowerShell Modules Installation Script
-# STEP 4 OF 5: Run this file after completing steps 1-3
-# run as Administrator
+# STEP 4 OF 7: Run this file after completing steps 1-3
+# Run as Administrator
+# Configuration: config/powershell-modules.psd1
 # .\4-powershell-modules-setup.ps1
 # Last updated: 2025-11-08
+
+# Load centralized configuration
+$configPath = Join-Path $PSScriptRoot "config\powershell-modules.psd1"
+if (-not (Test-Path $configPath)) {
+    Write-Host "[X] ERROR: Configuration file not found: $configPath" -ForegroundColor Red
+    Write-Host "Please ensure config\powershell-modules.psd1 exists" -ForegroundColor Yellow
+    exit 1
+}
+$config = Import-PowerShellDataFile -Path $configPath
 
 ############################################
 # Helper functions
@@ -220,33 +230,36 @@ catch {
 
 Write-Host "`n=== Installing core modules ===" -ForegroundColor Magenta
 
-$coreModules = @(
-    'ImportExcel',
-    'dbatools',
-    'PSWindowsUpdate',
-    'BurntToast',
-    'PSWriteHTML',
-    'Pester',
-    'posh-git',
-    'SqlServer'
-)
-
-foreach ($m in $coreModules) {
-    if ($m -eq 'Pester') {
-        Install-ModuleSafe -Name $m -Scope CurrentUser -SkipPublisherCheck
+foreach ($m in $config.ModulesCore) {
+    if ($m.SkipPublisherCheck) {
+        Install-ModuleSafe -Name $m.Name -Scope CurrentUser -SkipPublisherCheck
     }
     else {
-        Install-ModuleSafe -Name $m -Scope CurrentUser
+        Install-ModuleSafe -Name $m.Name -Scope CurrentUser
     }
 }
 
 ############################################
-# OPTIONAL MODULES (uncomment if needed)
+# OPTIONAL MODULES
 ############################################
-# Install-ModuleSafe -Name 'Az'              -Scope CurrentUser    # Azure
-# Install-ModuleSafe -Name 'Microsoft.Graph' -Scope CurrentUser    # Microsoft 365 / Graph
-# Install-ModuleSafe -Name 'PSSlack'         -Scope CurrentUser    # Slack integration
-# Install-ModuleSafe -Name 'PowerShellAI'    -Scope CurrentUser    # OpenAI from PowerShell
+# To enable optional modules, edit config\powershell-modules.psd1
+# and set Enabled=$true for the desired modules
+
+Write-Host "`n=== Installing optional modules ===" -ForegroundColor Magenta
+
+foreach ($m in $config.ModulesOptional) {
+    if ($m.Enabled) {
+        if ($m.SkipPublisherCheck) {
+            Install-ModuleSafe -Name $m.Name -Scope CurrentUser -SkipPublisherCheck
+        }
+        else {
+            Install-ModuleSafe -Name $m.Name -Scope CurrentUser
+        }
+    }
+    else {
+        Write-Host "  [SKIP] $($m.Name) - Not enabled in config (set Enabled=`$true to install)" -ForegroundColor Gray
+    }
+}
 
 ############################################
 # VERIFY INSTALLATION
@@ -254,13 +267,25 @@ foreach ($m in $coreModules) {
 
 Write-Host "`n=== Installed module versions ===" -ForegroundColor Cyan
 
-$coreModules | ForEach-Object {
-    $mod = Get-Module -ListAvailable -Name $_ | Sort-Object Version -Descending | Select-Object -First 1
+# Verify core modules
+$config.ModulesCore | ForEach-Object {
+    $mod = Get-Module -ListAvailable -Name $_.Name | Sort-Object Version -Descending | Select-Object -First 1
     if ($mod) {
-        "{0,-18} {1}" -f $_, $mod.Version
+        "{0,-18} {1}" -f $_.Name, $mod.Version
     }
     else {
-        "{0,-18} {1}" -f $_, 'not found'
+        "{0,-18} {1}" -f $_.Name, 'not found'
+    }
+}
+
+# Verify enabled optional modules
+$config.ModulesOptional | Where-Object { $_.Enabled } | ForEach-Object {
+    $mod = Get-Module -ListAvailable -Name $_.Name | Sort-Object Version -Descending | Select-Object -First 1
+    if ($mod) {
+        "{0,-18} {1}" -f $_.Name, $mod.Version
+    }
+    else {
+        "{0,-18} {1}" -f $_.Name, 'not found'
     }
 }
 
@@ -312,4 +337,5 @@ catch {
 
 Write-Host "`n=== Setup complete! ===" -ForegroundColor Green
 Write-Host "PowerShell modules installed and pip upgraded." -ForegroundColor Cyan
-Write-Host "Next: Run step 5 (pip install -r 5-python-requirements.txt)" -ForegroundColor Cyan
+Write-Host "Next: Run step 5 (.\5-python-packages-setup.ps1)" -ForegroundColor Cyan
+Write-Host "      Optional: .\6-win-services.ps1 (admin) and .\7-win-features.ps1 (admin)" -ForegroundColor Cyan

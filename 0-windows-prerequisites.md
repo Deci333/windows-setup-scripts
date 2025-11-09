@@ -46,7 +46,7 @@ Get-ComputerInfo | Select-Object WindowsVersion, OsBuildNumber
 
 **Required for:**
 - Step 1: WSL installation (1-windows-system-config.ps1)
-- Step 1b: WSL CLI tools (Node.js, Codex, Claude Code)
+- Step 1b: WSL CLI tools (Node.js, Codex, Claude Code) - optional
 - Step 2: Docker Desktop (uses WSL 2 backend)
 - Step 3: VS Code Remote Development extensions
 
@@ -136,7 +136,7 @@ Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
 ## Winget Requirement
 
 **Required for:**
-- Step 2: All application installations (2-winget-development.txt)
+- Step 2: All application installations (2-winget-development.ps1)
 
 **Pre-installed on:**
 - Windows 11 (built-in)
@@ -207,7 +207,7 @@ Get-WinEvent -LogName "Microsoft-Windows-OpenSSH/Operational"
 ```
 
 ## PowerShell 7 (PowerShell Core)
-**Note:** PowerShell 7 is installed in step 2 (2-winget-development.txt)
+**Note:** PowerShell 7 is installed in step 2 (.\2-winget-development.ps1)
 **No special Windows features required** - it runs alongside Windows PowerShell 5.1
 
 ## Python & pip

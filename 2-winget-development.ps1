@@ -1,11 +1,21 @@
 # ==================================================================
 # Winget Applications Interactive Installation
 # Checks if applications are installed and prompts for installation
-# STEP 2 OF 5: Run this file SECOND (after 1-windows-system-config.ps1)
+# STEP 2 OF 7: Run this file SECOND (after 1-windows-system-config.ps1)
 # Run in elevated PowerShell (Run as Administrator recommended)
+# Configuration: config/winget-packages.psd1
 # .\2-winget-development.ps1
 # Last updated: 2025-11-08
 # ==================================================================
+
+# Load centralized configuration
+$configPath = Join-Path $PSScriptRoot "config\winget-packages.psd1"
+if (-not (Test-Path $configPath)) {
+    Write-Host "[X] ERROR: Configuration file not found: $configPath" -ForegroundColor Red
+    Write-Host "Please ensure config\winget-packages.psd1 exists" -ForegroundColor Yellow
+    exit 1
+}
+$config = Import-PowerShellDataFile -Path $configPath
 
 # === PREREQUISITES ===
 # 1. Winget must be installed
@@ -30,7 +40,7 @@ function Install-WingetPackageInteractive {
     try {
         # Check if already installed using exact ID match
         # Suppress error output and capture result
-        $listOutput = winget list --id $Id 2>&1 | Out-String
+        $listOutput = winget list --id $Id --exact 2>&1 | Out-String
 
         # Check if package is already installed
         # winget list returns the package if found, check output contains the ID
@@ -181,20 +191,13 @@ catch {
 }
 
 # ============================================================================
-# REQUIRED DEPENDENCIES (Must install for steps 3-5 to work)
+# REQUIRED DEPENDENCIES (Must install for steps 3-7 to work)
 # ============================================================================
 Write-Host "`n`n=== REQUIRED DEPENDENCIES ===`n" -ForegroundColor Magenta
-Write-Host "These are required for subsequent setup steps (3-5)" -ForegroundColor Gray
+Write-Host "These are required for subsequent setup steps (3-7)" -ForegroundColor Gray
 
-$requiredPackages = @(
-    @{Id="Microsoft.VisualStudioCode";  Desc="VS Code - Required for step 3 (extensions)"; Required=$true; Silent=$true},
-    @{Id="Microsoft.PowerShell";        Desc="PowerShell 7+ - Required for step 4 (modules)"; Required=$true; Silent=$true},
-    @{Id="Python.Python.3.12";          Desc="Python 3.12 - Required for step 5 (packages)"; Required=$true; Silent=$true},
-    @{Id="Python.Launcher";             Desc="Python Launcher (py command)"; Required=$true; Silent=$true}
-)
-
-foreach ($pkg in $requiredPackages) {
-    Install-WingetPackageInteractive -Id $pkg.Id -Description $pkg.Desc -Required $pkg.Required -Silent $pkg.Silent
+foreach ($pkg in $config.PackagesRequired) {
+    Install-WingetPackageInteractive -Id $pkg.Id -Description $pkg.Desc -Required $true -Silent $pkg.Silent
 }
 
 # ============================================================================
@@ -203,73 +206,11 @@ foreach ($pkg in $requiredPackages) {
 Write-Host "`n`n=== OPTIONAL APPLICATIONS ===`n" -ForegroundColor Magenta
 Write-Host "All items below are optional. Install based on your needs." -ForegroundColor Gray
 
-$optionalPackages = @(
-    # Core Development Tools
-    @{Id="Git.Git";                                    Desc="Git version control"; Silent=$true},
-    @{Id="GitHub.GitHubDesktop";                       Desc="GitHub Desktop GUI"; Silent=$true},
-    @{Id="Notepad++.Notepad++";                        Desc="Advanced text editor"; Silent=$true},
-
-    # Programming Languages & Runtimes
-    @{Id="OpenJS.NodeJS.LTS";                          Desc="Node.js LTS runtime"; Silent=$true},
-    @{Id="Microsoft.DotNet.SDK.8";                     Desc=".NET SDK 8"; Silent=$true},
-    @{Id="Microsoft.DotNet.SDK.9";                     Desc=".NET SDK 9"; Silent=$true},
-
-    # AI & Machine Learning
-    @{Id="Anthropic.Claude";                           Desc="Claude AI desktop app"; Silent=$true},
-    @{Id="Ollama.Ollama";                              Desc="Local LLM runtime"; Silent=$true},
-
-    # Database & SQL Tools
-    @{Id="Microsoft.SQLServerManagementStudio";        Desc="SQL Server Management Studio"; Silent=$true},
-    @{Id="Microsoft.msodbcsql.17";                     Desc="SQL Server ODBC Driver 17"; Silent=$true},
-    @{Id="Microsoft.CLRTypesSQLServer.2019";           Desc="SQL Server CLR Types"; Silent=$true},
-
-    # Containers & Virtualization
-    @{Id="Docker.DockerDesktop";                       Desc="Docker Desktop (requires WSL2)"; Silent=$true},
-
-    # Advanced Development
-    @{Id="Microsoft.VisualStudio.2022.Community";      Desc="Visual Studio 2022 Community"; Silent=$true},
-    @{Id="Microsoft.VSTOR";                            Desc="Visual Studio Tools for Office Runtime"; Silent=$true},
-    @{Id="Microsoft.WebDeploy";                        Desc="Web Deploy for IIS"; Silent=$true},
-
-    # Essential Utilities
-    @{Id="7zip.7zip";                                  Desc="7-Zip file archiver"; Silent=$true},
-    @{Id="voidtools.Everything";                       Desc="Everything search tool"; Silent=$true},
-    @{Id="WinDirStat.WinDirStat";                      Desc="WinDirStat disk usage analyzer"; Silent=$true},
-    @{Id="ShareX.ShareX";                              Desc="ShareX screenshot/screen recording"; Silent=$true},
-    @{Id="VideoLAN.VLC";                               Desc="VLC media player"; Silent=$true},
-    @{Id="Adobe.Acrobat.Reader.64-bit";                Desc="Adobe Acrobat Reader"; Silent=$true},
-    @{Id="CPUID.CPU-Z";                                Desc="CPU-Z hardware info"; Silent=$true},
-
-    # Security & Network Tools
-    @{Id="KeePassXCTeam.KeePassXC";                    Desc="KeePassXC password manager"; Silent=$true},
-    @{Id="WiresharkFoundation.Wireshark";              Desc="Wireshark network analyzer"; Silent=$true},
-    @{Id="Malwarebytes.Malwarebytes";                  Desc="Malwarebytes anti-malware"; Silent=$true},
-    @{Id="Proton.ProtonVPN";                           Desc="ProtonVPN"; Silent=$true},
-
-    # Remote Access
-    @{Id="AnyDesk.AnyDesk";                            Desc="AnyDesk remote desktop"; Silent=$true},
-
-    # Media & Entertainment
-    @{Id="OBSProject.OBSStudio";                       Desc="OBS Studio streaming/recording"; Silent=$true},
-    @{Id="Spotify.Spotify";                            Desc="Spotify music"; Silent=$true},
-    @{Id="Valve.Steam";                                Desc="Steam gaming platform"; Silent=$true},
-    @{Id="Discord.Discord";                            Desc="Discord communication"; Silent=$true},
-
-    # Runtimes & Dependencies
-    @{Id="Microsoft.DotNet.DesktopRuntime.8";          Desc=".NET Desktop Runtime 8"; Silent=$true},
-    @{Id="Microsoft.DotNet.DesktopRuntime.9";          Desc=".NET Desktop Runtime 9"; Silent=$true},
-    @{Id="Microsoft.VCRedist.2015+.x64";               Desc="Visual C++ Redistributable"; Silent=$true},
-    @{Id="Microsoft.UI.Xaml.2.7";                      Desc="WinUI 2.7"; Silent=$true},
-    @{Id="Microsoft.UI.Xaml.2.8";                      Desc="WinUI 2.8"; Silent=$true},
-
-    # System Utilities
-    @{Id="Microsoft.PowerToys";                        Desc="PowerToys utilities"; Silent=$true},
-    @{Id="Microsoft.WindowsTerminal";                  Desc="Windows Terminal"; Silent=$true},
-    @{Id="Microsoft.Sysinternals.Suite";               Desc="Sysinternals Suite"; Silent=$true}
-)
-
-foreach ($pkg in $optionalPackages) {
-    Install-WingetPackageInteractive -Id $pkg.Id -Description $pkg.Desc -Required $false -Silent $pkg.Silent
+# Iterate through all categories in PackagesOptional (sorted for deterministic order)
+foreach ($category in ($config.PackagesOptional.Keys | Sort-Object)) {
+    foreach ($pkg in $config.PackagesOptional[$category]) {
+        Install-WingetPackageInteractive -Id $pkg.Id -Description $pkg.Desc -Required $false -Silent $pkg.Silent
+    }
 }
 
 # ============================================================================
@@ -287,7 +228,9 @@ Write-Host "`n=== Installation Complete ===`n" -ForegroundColor Cyan
 Write-Host "[OK] = already installed, [SKIP] = skipped by user, [X] = error" -ForegroundColor Gray
 Write-Host "`nNext steps:" -ForegroundColor Yellow
 Write-Host "  1. Close and reopen PowerShell/Terminal to refresh PATH" -ForegroundColor Cyan
-Write-Host "  2. Run step 3: Import VS Code extensions from 3-vscode-extensions.txt" -ForegroundColor Cyan
+Write-Host "  2. Run step 3: .\3-vscode-extensions.ps1" -ForegroundColor Cyan
 Write-Host "  3. Run step 4: .\4-powershell-modules-setup.ps1" -ForegroundColor Cyan
-Write-Host "  4. Run step 5: pip install -r 5-python-requirements.txt" -ForegroundColor Cyan
+Write-Host "  4. Run step 5: .\5-python-packages-setup.ps1" -ForegroundColor Cyan
+Write-Host "  5. (Optional) Run step 6: .\6-win-services.ps1 (requires admin)" -ForegroundColor Cyan
+Write-Host "  6. (Optional) Run step 7: .\7-win-features.ps1 (requires admin)" -ForegroundColor Cyan
 Write-Host "`nTo update all installed packages later, run: winget upgrade --all" -ForegroundColor Gray
