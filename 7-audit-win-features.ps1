@@ -1,6 +1,7 @@
 # ==================================================================
 # Windows Features Audit (No Changes)
-# STEP 7 OF 7 (AUDIT MODE - OPTIONAL): View-only mode for 7-win-features.ps1
+# STEP 7
+# View-only mode for 7-win-features.ps1
 # Checks current feature state against recommended baseline
 # Configuration: config/win-features.psd1
 # Admin rights required
@@ -66,3 +67,4 @@ foreach ($f in $config.FeaturesDisabled) {
 Write-Host "`n=== Audit Complete ===`n" -ForegroundColor Cyan
 Write-Host "[OK] = matches expected state, [!] = differs from expected, [?] = not found" -ForegroundColor Gray
 Write-Host "Run 7-win-features.ps1 (as Administrator) to apply the baseline configuration" -ForegroundColor Gray
+Write-Host "Proceed to Step 8" -ForegroundColor Gray

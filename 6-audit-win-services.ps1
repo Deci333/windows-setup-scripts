@@ -1,6 +1,6 @@
 # ==================================================================
 # Windows Services Audit (No Changes)
-# STEP 6 OF 7 (AUDIT MODE - OPTIONAL): View-only mode for 6-win-services.ps1
+# STEP 6 - View-only mode for 6-win-services.ps1
 # Checks current service state against recommended baseline
 # Configuration: config/win-services.psd1
 # Safe to run on any workstation (no admin rights required)
@@ -80,3 +80,4 @@ foreach ($s in $config.ServicesDisabled) {
 Write-Host "`n=== Audit Complete ===`n" -ForegroundColor Cyan
 Write-Host "[OK] = matches expected state, [!] = differs from expected, [X] = not found" -ForegroundColor Gray
 Write-Host "Run 6-win-services.ps1 (as Administrator) to apply the baseline configuration" -ForegroundColor Gray
+Write-Host "Proceed to 7-win-features.ps1 (as Administrator)" -ForegroundColor Gray

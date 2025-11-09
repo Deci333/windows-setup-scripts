@@ -1,8 +1,8 @@
 # ==================================================================
 # Winget Applications Interactive Installation
 # Checks if applications are installed and prompts for installation
-# STEP 2 OF 7: Run this file SECOND (after 1-windows-system-config.ps1)
-# Run in elevated PowerShell (Run as Administrator recommended)
+# STEP 2
+# Run as Administrator recommended
 # Configuration: config/winget-packages.psd1
 # .\2-winget-development.ps1
 # Last updated: 2025-11-08
@@ -227,10 +227,7 @@ Install-AutoHotkeyInteractive
 Write-Host "`n=== Installation Complete ===`n" -ForegroundColor Cyan
 Write-Host "[OK] = already installed, [SKIP] = skipped by user, [X] = error" -ForegroundColor Gray
 Write-Host "`nNext steps:" -ForegroundColor Yellow
-Write-Host "  1. Close and reopen PowerShell/Terminal to refresh PATH" -ForegroundColor Cyan
-Write-Host "  2. Run step 3: .\3-vscode-extensions.ps1" -ForegroundColor Cyan
-Write-Host "  3. Run step 4: .\4-powershell-modules-setup.ps1" -ForegroundColor Cyan
-Write-Host "  4. Run step 5: .\5-python-packages-setup.ps1" -ForegroundColor Cyan
-Write-Host "  5. (Optional) Run step 6: .\6-win-services.ps1 (requires admin)" -ForegroundColor Cyan
-Write-Host "  6. (Optional) Run step 7: .\7-win-features.ps1 (requires admin)" -ForegroundColor Cyan
+Write-Host "  - Reboot PC" -ForegroundColor Cyan
+Write-Host "  - Open VS Code, log in with your ms acct" -ForegroundColor Cyan
+Write-Host "  - Run step 2a: .\2a-git-setup.ps1 to configure Git" -ForegroundColor Cyan
 Write-Host "`nTo update all installed packages later, run: winget upgrade --all" -ForegroundColor Gray

@@ -1,6 +1,6 @@
 # ==================================================================
 # Windows Features Interactive Configuration
-# STEP 7 OF 7 (OPTIONAL): Run this file after completing steps 1-6
+# STEP 7
 # Checks current feature state and prompts for changes
 # Configuration: config/win-features.psd1
 # Run as Administrator

@@ -1,9 +1,9 @@
 # ==================================================================
 # Windows Services Interactive Configuration
-# STEP 6 OF 7 (OPTIONAL): Run this file after completing steps 1-5
+# STEP 6
 # Checks current service state and prompts for changes
 # Configuration: config/win-services.psd1
-# Run in elevated PowerShell (Run as Administrator)
+# Run as Administrator
 # .\6-win-services.ps1
 # Last updated: 2025-11-08
 # ==================================================================
@@ -123,4 +123,5 @@ foreach ($s in $config.ServicesDisabled) {
 
 Write-Host "`n=== Configuration Complete ===`n" -ForegroundColor Cyan
 Write-Host "[OK] = already correct, [!] = prompted for change, [SKIP] = skipped by user, [X] = not found/error" -ForegroundColor Gray
+Write-Host "Reboot PC" -ForegroundColor Gray
 Write-Host "Run 6-audit-win-services.ps1 to verify the current configuration" -ForegroundColor Gray

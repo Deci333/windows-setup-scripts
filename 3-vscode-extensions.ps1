@@ -1,11 +1,11 @@
 # ==================================================================
 # VS Code Extensions Interactive Installation
 # Checks if extensions are installed and prompts for installation
-# STEP 3 OF 7: Run this file THIRD (after 1-windows-system-config.ps1 and 2-winget-development.ps1)
+# STEP 3
 # Run in PowerShell (admin NOT required)
 # Configuration: config/vscode-extensions.psd1
 # .\3-vscode-extensions.ps1
-# Last updated: 2025-11-08
+# Last updated: 2025-11-09
 # ==================================================================
 
 # Load centralized configuration
@@ -214,9 +214,7 @@ foreach ($ext in $config.Utilities) {
 Write-Host "`n=== Installation Complete ===`n" -ForegroundColor Cyan
 Write-Host "[OK] = already installed, [SKIP] = skipped by user, [X] = error" -ForegroundColor Gray
 Write-Host "`nNext steps:" -ForegroundColor Yellow
-Write-Host "  1. Restart VS Code to activate all installed extensions" -ForegroundColor Cyan
-Write-Host "  2. Run step 4: .\4-powershell-modules-setup.ps1" -ForegroundColor Cyan
-Write-Host "  3. Run step 5: .\5-python-packages-setup.ps1" -ForegroundColor Cyan
-Write-Host "  4. (Optional) Run step 6: .\6-win-services.ps1 (requires admin)" -ForegroundColor Cyan
-Write-Host "  5. (Optional) Run step 7: .\7-win-features.ps1 (requires admin)" -ForegroundColor Cyan
+Write-Host "  - Reboot PC" -ForegroundColor Cyan
+Write-Host "  - Open VS Code to activate all installed extensions" -ForegroundColor Cyan
+Write-Host "  - Run Step 4: .\4-powershell-modules-setup.ps1" -ForegroundColor Cyan
 Write-Host "`nTo view all installed extensions: code --list-extensions" -ForegroundColor Gray

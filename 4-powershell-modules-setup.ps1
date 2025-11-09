@@ -1,9 +1,9 @@
 # PowerShell Modules Installation Script
-# STEP 4 OF 7: Run this file after completing steps 1-3
+# STEP 4
 # Run as Administrator
 # Configuration: config/powershell-modules.psd1
 # .\4-powershell-modules-setup.ps1
-# Last updated: 2025-11-08
+# Last updated: 2025-11-09
 
 # Load centralized configuration
 $configPath = Join-Path $PSScriptRoot "config\powershell-modules.psd1"
@@ -198,17 +198,7 @@ Initialize-PowerShellGet
 # 3) NuGet provider
 Initialize-NuGetProvider
 
-# 4) Execution Policy for current user
-Write-Host "`n=== Execution Policy ===" -ForegroundColor Cyan
-try {
-    Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force -ErrorAction Stop
-    Write-Result "ExecutionPolicy" $true "Set to RemoteSigned for CurrentUser"
-}
-catch {
-    Write-Result "ExecutionPolicy" $false "Failed to set policy: $($_.Exception.Message)"
-}
-
-# 5) Ensure PSGallery is trusted
+# 4) Ensure PSGallery is trusted
 Write-Host "`n=== PSRepository (PSGallery) ===" -ForegroundColor Cyan
 try {
     $repo = Get-PSRepository -Name PSGallery -ErrorAction Stop
@@ -337,5 +327,5 @@ catch {
 
 Write-Host "`n=== Setup complete! ===" -ForegroundColor Green
 Write-Host "PowerShell modules installed and pip upgraded." -ForegroundColor Cyan
-Write-Host "Next: Run step 5 (.\5-python-packages-setup.ps1)" -ForegroundColor Cyan
-Write-Host "      Optional: .\6-win-services.ps1 (admin) and .\7-win-features.ps1 (admin)" -ForegroundColor Cyan
+Write-Host "Reboot PC" -ForegroundColor Cyan
+Write-Host "Run step 5 (.\5-python-packages-setup.ps1)" -ForegroundColor Cyan

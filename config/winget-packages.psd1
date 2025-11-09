@@ -7,13 +7,14 @@
 
 @{
     # ================================================================
-    # REQUIRED DEPENDENCIES (Must install for steps 3-5 to work)
+    # REQUIRED DEPENDENCIES (Must install for steps 3-8 to work)
     # ================================================================
     PackagesRequired = @(
         @{Id="Microsoft.VisualStudioCode";  Desc="VS Code - Required for step 3 (extensions)"; Silent=$true}
         @{Id="Microsoft.PowerShell";        Desc="PowerShell 7+ - Required for step 4 (modules)"; Silent=$true}
         @{Id="Python.Python.3.12";          Desc="Python 3.12 - Required for step 5 (packages)"; Silent=$true}
         @{Id="Python.Launcher";             Desc="Python Launcher (py command)"; Silent=$true}
+        @{Id="Git.Git";                     Desc="Git version control - Required for development"; Silent=$true}
     )
 
     # ================================================================
@@ -21,7 +22,6 @@
     # ================================================================
     PackagesOptional = @{
         CoreDevelopment = @(
-            @{Id="Git.Git";                                    Desc="Git version control"; Silent=$true}
             @{Id="GitHub.GitHubDesktop";                       Desc="GitHub Desktop GUI"; Silent=$true}
             @{Id="Notepad++.Notepad++";                        Desc="Advanced text editor"; Silent=$true}
         )

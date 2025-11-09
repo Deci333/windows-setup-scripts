@@ -1,7 +1,7 @@
 # ==================================================================
 # Python Packages Interactive Installation
 # Checks if packages are installed and prompts for installation
-# STEP 5 OF 7: Run this file after completing steps 1-4
+# STEP 5
 # Run in PowerShell (admin NOT required)
 # Configuration: config/python-packages.psd1
 # .\5-python-packages-setup.ps1
@@ -282,6 +282,7 @@ foreach ($pkg in $config.MachineLearning) {
 # ============================================================================
 Write-Host "`n=== Installation Complete ===`n" -ForegroundColor Cyan
 Write-Host "[OK] = already installed, [SKIP] = skipped by user, [X] = error" -ForegroundColor Gray
-Write-Host "`nAll setup steps complete! Your development environment is ready." -ForegroundColor Green
+Write-Host "`nReboot PC." -ForegroundColor Green
+Write-Host "`nProceed to Step 6: .\6-win-services.ps1" -ForegroundColor Green
 Write-Host "`nTo upgrade packages later, run: pip install --upgrade package-name" -ForegroundColor Gray
 Write-Host "To see all installed packages: pip list" -ForegroundColor Gray
