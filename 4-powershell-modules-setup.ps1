@@ -4,6 +4,10 @@
 # Configuration: config/powershell-modules.psd1
 # .\4-powershell-modules-setup.ps1
 # Last updated: 2025-11-09
+# Troubleshoot - in the event of "PowerShellGet: Update failed: Module 'PowerShellGet' was not installed by using Install-Module, so it cannot be updated."
+# Something was not originally installed by Install-Module, so it cannot be updated. To fix, you can force the installation of PowerShellGet - reboot prior:
+# Install-Module PowerShellGet -Scope CurrentUser -Force
+# Import-Module PowerShellGet -Force
 
 # Load centralized configuration
 $configPath = Join-Path $PSScriptRoot "config\powershell-modules.psd1"

@@ -1,19 +1,17 @@
 # Windows Setup Scripts
 
 A collection of scripts and configuration files for automating Windows PC setup using Winget, PowerShell modules, Python packages, and VS Code extensions.
-- May prove useful in setting up and standardizing multiuple PC's
-- Highly customizable, assets can easily be changed in the .psd1 files
-- Current setup is designed to engage the user, once refined - We will add a toggle for user Y/N Prompts.
-A semi-automated or at least guided method to for beginners: 
-- reduce setup friction so that the user can get up and running in an IDE with CLI Agents.
-- gain some familiarity with fundamentals
-All .ps1's designed so they can be run and re-run
-- This provides a check to confirm that proper changes have been made.  
-- This should serve to provide useful information and simplify troubleshooting where necessary.
-Sections not yet finalized or to be added
-- Docker setup and confirmed operational
-- Ubuntu setup and confirmed operational
-- Custom scheduled task creator
+May prove useful in setting up and standardizing multiuple PC's.
+Highly customizable, assets can easily be changed in the .psd1 files.
+Current setup is designed to engage the user, once refined - We will add a toggle for user Y/N Prompts.
+A semi-automated or at least guided method to for beginners: reduce setup friction so that the user can get up and running in an IDE with CLI Agents.
+All .ps1's designed so they can be run and re-run.
+This provides a check to confirm that proper changes have been made.  
+This should serve to provide useful information and simplify troubleshooting where necessary.
+Sections not yet finalized or to be added.
+Docker setup and confirmed operational.
+Ubuntu setup and confirmed operational.
+Custom scheduled task creator.
 
 ## Quick Start
 

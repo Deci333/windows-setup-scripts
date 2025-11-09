@@ -2,7 +2,7 @@
 # Windows Features Configuration
 # Centralized configuration for Windows features baseline
 # Used by: 7-audit-win-features.ps1, 7-win-features.ps1
-# Last updated: 2025-11-08
+# Last updated: 2025-11-09
 # ==================================================================
 
 @{
@@ -17,10 +17,7 @@
         @{Name="VirtualMachinePlatform";                 Desc="Virtual Machine Platform (WSL2/Hyper-V)"}
         @{Name="Microsoft-Hyper-V-All";                  Desc="Hyper-V virtualization"}
         @{Name="Microsoft-Windows-Subsystem-Linux";      Desc="Windows Subsystem for Linux"}
-        @{Name="Windows-Defender-ApplicationGuard";      Desc="Application Guard security isolation"}
-        @{Name="Windows-Defender-Credential-Guard";      Desc="Credential Guard protection"}
         @{Name="Containers-DisposableClientVM";          Desc="Windows Sandbox"}
-        @{Name="WebDAV-Redirector";                      Desc="WebDAV client for network drives"}
     )
 
     # ================================================================
@@ -33,8 +30,6 @@
         @{Name="SimpleTCP";                            Desc="Simple TCP/IP services"}
         @{Name="MediaPlayback";                        Desc="Windows Media Playback"}
         @{Name="WindowsMediaPlayer";                   Desc="Windows Media Player (legacy)"}
-        @{Name="XPS-Viewer";                           Desc="XPS Viewer"}
-        @{Name="TabletPCMath";                         Desc="Math Recognition (Tablet PC)"}
         @{Name="IIS-WebServerRole";                    Desc="Internet Information Services"}
         @{Name="IIS-WebServer";                        Desc="IIS Web Server"}
         @{Name="IIS-CommonHttpFeatures";               Desc="IIS Common HTTP Features"}
@@ -51,6 +46,5 @@
         @{Name="IIS-WebSockets";                       Desc="IIS WebSocket Protocol"}
         @{Name="IIS-ASPNET45";                         Desc="IIS ASP.NET 4.5"}
         @{Name="DirectPlay";                           Desc="DirectPlay (legacy gaming)"}
-        @{Name="ServicesForNFS-ServerAndClient";       Desc="Network File System services"}
     )
 }
