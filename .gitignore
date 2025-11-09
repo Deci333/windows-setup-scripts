@@ -9,3 +9,7 @@ Thumbs.db
 *.swp
 *.swo
 *~
+
+# Export/generated files
+ServicesExport.txt
+WindowsFeatures.csv
