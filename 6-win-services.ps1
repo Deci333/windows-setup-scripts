@@ -6,6 +6,11 @@
 # Run as Administrator
 # .\6-win-services.ps1
 # Last updated: 2025-11-08
+# to get list of your services and status - Run as administrator:
+# Get-Service -ErrorAction SilentlyContinue |
+# Select-Object Name, DisplayName, Status, StartType |
+# Export-Csv -Path "C:\ServicesList.csv" -NoTypeInformation
+
 # ==================================================================
 
 # Load centralized configuration

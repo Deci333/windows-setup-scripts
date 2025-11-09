@@ -6,6 +6,11 @@
 # Run as Administrator
 # .\7-win-features.ps1
 # Last updated: 2025-11-08
+# to get list of your features and status - Run as administrator:
+# Get-WindowsOptionalFeature -Online |
+# Select-Object FeatureName, State |
+# Export-Csv -Path "C:\WindowsFeatures.csv" -NoTypeInformation
+
 # ==================================================================
 
 # Load centralized configuration
