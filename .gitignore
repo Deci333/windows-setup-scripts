@@ -13,3 +13,6 @@ Thumbs.db
 # Export/generated files
 ServicesList.csv
 WindowsFeatures.csv
+
+# Documentation files
+CLAUDE.md
