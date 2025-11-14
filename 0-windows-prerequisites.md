@@ -117,8 +117,8 @@ Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
 Start-Service sshd
 Set-Service -Name sshd -StartupType 'Automatic'
 
-# Log and monitor with ------this failed - try reboot and run again
-Get-WinEvent -LogName "Microsoft-Windows-OpenSSH/Operational"
+# View OpenSSH event logs
+Get-WinEvent -LogName "OpenSSH/Operational" -MaxEvents 10
 ```
 
 **#################################################################**
