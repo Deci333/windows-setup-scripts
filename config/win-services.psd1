@@ -19,6 +19,7 @@
         @{Name="W32Time";   Desc="Windows Time (domain/time sync)"}
         @{Name="Winmgmt";   Desc="Windows Management Instrumentation (WMI provider host)"}
         @{Name="wuauserv";  Desc="Windows Update (core servicing engine)"}
+        @{Name="WerSvc";    Desc="Windows Error Reporting (crash upload + diagnostics)"}
     )
 
     # ================================================================
@@ -26,7 +27,6 @@
     # ================================================================
     ServicesManual = @(
         @{Name="msiserver"; Desc="Windows Installer (MSI package handling)"}
-        @{Name="WerSvc";    Desc="Windows Error Reporting (crash upload + diagnostics)"}
     )
 
     # ================================================================

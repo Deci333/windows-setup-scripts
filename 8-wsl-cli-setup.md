@@ -107,107 +107,54 @@ npm --version
 nvm current  # Should show v22.x.x
 ```
 
-### 5. Configure npm Global Packages (Avoid sudo)
-
-To install npm global packages without sudo, configure npm to use a user directory:
-
-```bash
-# Create directory for global npm packages
-mkdir -p ~/.npm-global
-
-# Configure npm to use this directory
-npm config set prefix ~/.npm-global
-
-# Add to PATH - append to ~/.bashrc
-echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.bashrc
-
-# Reload bashrc
-source ~/.bashrc
-```
-
-**Verify:**
-```bash
-# This should show your user directory
-npm config get prefix
-# Expected: /home/yourusername/.npm-global
-```
-
 Now you can install global npm packages without sudo:
 ```bash
-# Example: Install packages without sudo
+# Install packages without sudo
 npm install -g typescript
 npm install -g @anthropic-ai/claude-code
 npm install -g @openai/codex
 ```
 
 ## Codex CLI Setup
-
 OpenAI Codex CLI for terminal-based AI assistance.
-
 ### Install Codex
-
 ```bash
 npm i -g @openai/codex
 ```
-
 ### First Run
-
 ```bash
 codex
 ```
-
 **Note:** You will be prompted to login with your OpenAI account on first run. Click the link to authenticate.
-
 ### Usage
-
 Run codex in VS Code WSL terminal:
 ```bash
 wsl
 codex
 ```
-
 You can use command line commands or natural language to interact with Codex.
-
 ### Update Codex
-
 ```bash
 npm i -g @openai/codex@latest
 ```
 
 ## Claude Code CLI Setup
-
 Anthropic's Claude Code CLI for terminal-based AI coding assistance.
-
 ### Installation Options
 
-**Option 1: NPM (Recommended for WSL)**
+**NPM (Recommended for WSL)**
 ```bash
 npm install -g @anthropic-ai/claude-code
 ```
-**Option 2: NPM with sudo (if permission issues)**
-```bash
-sudo npm install -g @anthropic-ai/claude-code
-```
-**Option 3: Direct install script**
-```bash
-curl -fsSL https://claude.ai/install.sh | bash
-```
-**Option 4: For Windows PowerShell (direct)**
-```powershell
-irm https://claude.ai/install.ps1 | iex
-```
-
 ### Usage
 Run Claude Code in VS Code terminal (PowerShell or WSL):
 ```bash
 claude
 ```
-
 ### Verify Installation
 ```bash
 claude --version
 ```
-
 ### Update Claude Code
 In WSL:
 ```bash
@@ -215,13 +162,10 @@ npm install -g @anthropic-ai/claude-code
 ```
 
 ## Git Configuration in WSL
-
 Git for Windows was installed in step 2, but WSL has its own separate Git installation (installed in the baseline packages above). You can use either or both depending on your workflow.
 
 ### Configure Git Identity
-
 Set your Git identity for WSL (required for commits):
-
 ```bash
 # Set your name and email
 git config --global user.name "Your Name"
@@ -242,7 +186,6 @@ git config --global --list
 - **WSL Git**: `core.autocrlf input` (converts CRLF to LF on commit, keeps LF on checkout)
 
 ### SSH Key Setup for WSL
-
 Generate SSH keys for GitHub/GitLab access:
 
 ```bash
@@ -254,7 +197,6 @@ ssh-keygen -t ed25519 -C "your.email@example.com"
 ```
 
 ### Add SSH Key to ssh-agent
-
 ```bash
 # Start the ssh-agent
 eval "$(ssh-agent -s)"
@@ -267,7 +209,6 @@ cat ~/.ssh/id_ed25519.pub
 ```
 
 ### Add SSH Key to GitHub/GitLab
-
 1. **Copy your public key:**
    ```bash
    cat ~/.ssh/id_ed25519.pub
@@ -302,14 +243,13 @@ If you want to use the same SSH keys for both Windows and WSL:
 
 ```bash
 # Create symbolic link to Windows SSH keys
+# Replace `YourWindowsUsername` with your actual Windows username.
 ln -s /mnt/c/Users/YourWindowsUsername/.ssh ~/.ssh
 
 # Fix permissions (important for SSH to accept the keys)
 chmod 600 ~/.ssh/id_ed25519
 chmod 644 ~/.ssh/id_ed25519.pub
 ```
-
-**Note:** Replace `YourWindowsUsername` with your actual Windows username.
 
 ### Windows Git vs WSL Git
 
@@ -351,8 +291,3 @@ chmod 644 ~/.ssh/id_ed25519.pub
 **NVM command not found:**
 - Restart your WSL terminal
 - Run: `source ~/.bashrc`
-
-**Permission errors with npm:**
-- Follow the npm global configuration steps above (section 5 under Node.js Setup)
-- Never use `sudo` with npm - it's a security risk
-- Properly configured npm should not require sudo
