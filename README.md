@@ -21,9 +21,8 @@ For a complete development environment, run these files in order:
 
 1. **System Configuration & WSL Setup**
    ```powershell
-   # Run as Administrator
-   cd "Your-local-Repo-Dir Here"
-   .\1-windows-system-config.ps1
+   # Run as Administrator - follow manual instructions in:
+   # 1-windows-system-config.md
    # RESTART YOUR COMPUTER after this step
    ```
 
@@ -147,18 +146,14 @@ All package lists, extensions, modules, and settings are centralized in **PowerS
 - Windows 10 version 2004 or higher required
 - At least 60GB free disk space recommended
 
-### 1-windows-system-config.ps1
-**STEP 1** - Windows system configuration script:
+### 1-windows-system-config.md
+**STEP 1** - Windows system configuration (manual):
 - Power settings (disable sleep)
 - PowerShell execution policy (RemoteSigned for CurrentUser)
 - WSL2 (Windows Subsystem for Linux) installation
 - **Requires system restart after completion**
 
-**Usage:**
-```powershell
-# Run as Administrator
-.\1-windows-system-config.ps1
-```
+**Note:** This is a markdown file with manual instructions because a .ps1 script cannot enable its own execution policy.
 
 ### 2-winget-development.ps1
 **STEP 2** - Complete Windows application setup organized into two sections:

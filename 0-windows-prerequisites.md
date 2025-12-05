@@ -121,11 +121,25 @@ Set-Service -Name sshd -StartupType 'Automatic'
 Get-WinEvent -LogName "OpenSSH/Operational" -MaxEvents 10
 ```
 
+# If issues here, try (MAKE SURE TO SWAP USERPROFILE TO MATCH YOURS) - enter code into link
+```powershell
+cd "C:\Users\USERPROFILE\AppData\Local\Programs\Microsoft VS Code\bin"
+.\code-tunnel.exe tunnel user login
+```
+
+# After that completes, try creating the tunnel(REPLACE PCNAME WITH THE NAME OF YOUR PC):
+```powershell
+.\code-tunnel.exe tunnel --name PCNAME
+.\code-tunnel.exe tunnel --name BFMAIN --log trace
+```
+
+
+
 **#################################################################**
 ### Troubleshoot - Windows Subsystem for Linux (WSL)
 
 **Required for:**
-- Step 1: WSL installation (1-windows-system-config.ps1)
+- Step 1: WSL installation (1-windows-system-config.md)
 - Step 1b: WSL CLI tools (Node.js, Codex, Claude Code) - optional
 - Step 2: Docker Desktop (uses WSL 2 backend)
 - Step 3: VS Code Remote Development extensions
@@ -259,4 +273,4 @@ wsl --list --verbose
 Python is installed via winget in step 2.
 
 **#################################################################**
-#### Proceed to: **1-windows-system-config.ps1** (Step 1)
+#### Proceed to: **1-windows-system-config.md** (Step 1)

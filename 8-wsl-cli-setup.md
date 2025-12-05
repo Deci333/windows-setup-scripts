@@ -7,7 +7,7 @@ This step covers CLI tool installations for WSL (Windows Subsystem for Linux).
 ## Prerequisites
 
 ✅ **Before starting:**
-1. WSL must be installed (via step 1: `1-windows-system-config.ps1`)
+1. WSL must be installed (via step 1: `1-windows-system-config.md`)
 3. Ubuntu (or your chosen Linux distribution) must be set up
 4. Git should already be installed on Windows (from step 2)
 
@@ -285,7 +285,7 @@ chmod 644 ~/.ssh/id_ed25519.pub
 
 ## Troubleshooting
 **WSL command not found:**
-- Make sure you've restarted your computer after running `1-windows-system-config.ps1`
+- Make sure you've restarted your computer after completing `1-windows-system-config.md`
 - Verify WSL is installed: `wsl --status` in PowerShell
 
 **NVM command not found:**
